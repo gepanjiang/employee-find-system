@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.NoticeDAO">
+    <resultMap type="com.bean.Notice" id="BaseResultMap">
+      <id column="id" property="id" jdbcType="INTEGER"/>
+      <result column="title" property="title" jdbcType="VARCHAR"/>
+      <result column="filename" property="filename" jdbcType="VARCHAR"/>
+      <result column="content" property="content" jdbcType="VARCHAR"/>
+      <result column="savetime" property="savetime" jdbcType="VARCHAR"/>
+      <result column="author" property="author" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+      select * from notice where 1=1 
+      <if test="key!=null">
+        and title like "%"#{key}"%"
+      </if>
+       order by id desc
+    </select>
+    
+    <insert id="add" parameterType="Notice">
+      insert into notice values(null,#{title},#{filename},#{content},#{savetime},#{author})
+    </insert>
+    
+    <select id="findById" parameterType="Int" resultType="Notice">
+      select * from notice where id=#{id}
+    </select>
+    
+    <update id="update" parameterType="Notice">
+		update notice set
+		<if test="title!=null">
+		title=#{title},
+		</if>
+		<if test="author!=null">
+		author=#{author},
+		</if>
+		<if test="filename!=null">
+		filename=#{filename},
+		</if>
+		<if test="content!=null">
+		content=#{content}
+		</if>
+		 where id=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="Int">
+	  delete from notice where id=#{id}
+	</delete>
+	
+</mapper>
+

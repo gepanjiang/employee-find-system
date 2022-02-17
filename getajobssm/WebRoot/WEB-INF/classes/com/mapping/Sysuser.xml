@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.SysuserDAO">
+
+    <resultMap type="com.bean.Sysuser" id="BaseResultMap">
+      <id column="id" property="id" jdbcType="INTEGER"/>
+      <result column="username" property="username" jdbcType="VARCHAR"/>
+      <result column="userpwd" property="userpwd" jdbcType="VARCHAR"/>
+      <result column="realname" property="realname" jdbcType="VARCHAR"/>
+      <result column="sex" property="sex" jdbcType="VARCHAR"/>
+      <result column="idcard" property="idcard" jdbcType="VARCHAR"/>
+      <result column="tel" property="tel" jdbcType="VARCHAR"/>
+      <result column="email" property="email" jdbcType="VARCHAR"/>
+      <result column="addr" property="addr" jdbcType="VARCHAR"/>
+      <result column="delstatus" property="delstatus" jdbcType="VARCHAR"/>
+      <result column="savetime" property="savetime" jdbcType="VARCHAR"/>
+      <result column="filename" property="filename" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    
+    <select id="selectOne" parameterType="HashMap" resultMap="BaseResultMap">
+      select * from sysuser where username = #{username} and userpwd = #{userpwd}
+    </select>
+
+	<select id="findById" resultType="sysuser" parameterType="int">
+		select * from sysuser where id=#{id}
+	</select>
+
+	<update id="update" parameterType="sysuser">
+		update sysuser set
+		<if test="userpwd!=null">
+		userpwd=#{userpwd},
+		</if>
+		<if test="realname!=null">
+		realname=#{realname},
+		</if>
+		<if test="sex!=null">
+		sex=#{sex},
+		</if>
+		<if test="tel!=null">
+		tel=#{tel},
+		</if>
+		<if test="email!=null">
+		email=#{email},
+		</if>
+		<if test="addr!=null">
+		addr=#{addr},
+		</if>
+		<if test="filename!=null">
+		filename=#{filename}
+		</if>
+		 
+		 where id=#{id}
+	</update>
+	
+	<update id="updatepwd" >
+		update sysuser set sysuserpassword=#{1} where id=#{0}
+	</update>
+
+	
+	<select id="checkUsername" parameterType="String" resultMap="BaseResultMap">
+	  select * from sysuser where username =#{username} and delstatus=0
+	</select>
+	
+	<select id="selectAll" parameterType="HashMap" resultMap="BaseResultMap">
+	  select * from sysuser where delstatus=0
+	  <if test="key!=null">
+	    and realname like "%"#{key}"%"
+	  </if>
+	  order by id desc
+	</select>
+	
+	<insert id="add" parameterType="Sysuser">
+	  insert into sysuser values(null,#{username},#{userpwd},#{realname},#{sex},#{idcard},#{tel},#{email},#{addr},#{delstatus},#{savetime},#{filename})
+	</insert>
+	
+	<update id="delete" parameterType="Int">
+	  update sysuser set delstatus=1 where id=#{id}
+	</update>
+	
+	
+</mapper>
+

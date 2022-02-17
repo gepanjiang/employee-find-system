@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.ChatDAO">
+    <resultMap type="com.bean.Chat" id="BaseResultMap">
+      <id column="id" property="id" jdbcType="INTEGER"/>
+      <result column="content" property="content" jdbcType="VARCHAR"/>
+      <result column="hfcontent" property="hfcontent" jdbcType="VARCHAR"/>
+      <result column="savetime" property="savetime" jdbcType="VARCHAR"/>
+      <result column="memberid" property="memberid" jdbcType="INTEGER"/>
+    </resultMap>
+    
+    <insert id="add" parameterType="chat">
+      insert into chat values(null,#{content},#{hfcontent},#{savetime},#{memberid})
+    </insert>
+    
+    <select id="selectAll" parameterType="HashMap" resultMap="BaseResultMap">
+      select * from chat where 1=1 
+      <if test="key!=null">
+         and content like "%"#{key}"%"
+      </if>
+      order by savetime desc
+    </select>
+    
+    <update id="update" parameterType="chat">
+      update chat set hfcontent=#{hfcontent} where id=#{id}
+    </update>
+    
+    <delete id="delete" parameterType="Int">
+      delete from chat where id=#{id}
+    </delete>
+    
+    
+	
+</mapper>
+

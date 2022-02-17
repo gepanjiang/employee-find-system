@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.WorkDAO">
+    <resultMap type="com.bean.Work" id="BaseResultMap">
+      <id column="id" property="id" jdbcType="INTEGER"/>
+      <result column="memberid" property="memberid" jdbcType="INTEGER"/>
+      <result column="title" property="title" jdbcType="VARCHAR"/>
+      <result column="filename" property="filename" jdbcType="VARCHAR"/>
+      <result column="savetime" property="savetime" jdbcType="VARCHAR"/>
+      <result column="xueli" property="xueli" jdbcType="VARCHAR"/>
+      <result column="content" property="content" jdbcType="VARCHAR"/>
+      <result column="salary" property="salary" jdbcType="VARCHAR"/>
+      <result column="ziwei" property="ziwei" jdbcType="VARCHAR"/>
+      <result column="delstatus" property="delstatus" jdbcType="VARCHAR"/>
+      <result column="memberid" property="memberid" jdbcType="INTEGER"/>
+      <result column="name" property="name" jdbcType="VARCHAR"/>
+      <result column="tel" property="tel" jdbcType="VARCHAR"/>
+      <result column="pnum" property="pnum" jdbcType="INTEGER"/>
+    </resultMap>
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+      select * from work where 1=1 and delstatus=0
+      <if test="key!=null">
+        and title like "%"#{key}"%"
+      </if>
+      <if test="ziwei!=null">
+        and ziwei like "%"#{ziwei}"%"
+      </if>
+      <if test="salary!=null">
+        and <![CDATA[ salary>=#{salary} ]]>
+      </if>
+      <if test="memberid!=null">
+        and memberid=#{memberid}
+      </if>
+       order by savetime desc
+    </select>
+    
+    <insert id="add" parameterType="work">
+      insert into work values(null,#{title},#{filename},#{savetime},#{xueli},#{content},#{salary},#{ziwei},#{delstatus},#{memberid},#{name},#{tel},#{pnum},#{vote})
+    </insert>
+    
+    <select id="findById" parameterType="Int" resultType="work">
+      select * from work where id=#{id}
+    </select>
+    
+    <update id="update" parameterType="work">
+		update work set
+		<if test="title!=null">
+		title=#{title},
+		</if>
+		<if test="filename!=null">
+		filename=#{filename},
+		</if>
+		<if test="ziwei!=null">
+		ziwei=#{ziwei},
+		</if>
+		<if test="xueli!=null">
+		xueli=#{xueli},
+		</if>
+		<if test="content!=null">
+		content=#{content},
+		</if>
+		<if test="salary!=null">
+		salary=#{salary},
+		</if>
+		<if test="tel!=null">
+		tel=#{tel},
+		</if>
+		<if test="name!=null">
+		name=#{name},
+		</if>
+		<if test="vote!=null">
+		vote=#{vote},
+		</if>
+		<if test="pnum!=null">
+		pnum=#{pnum}
+		</if>
+		 where id=#{id}
+	</update>
+	
+	<update id="delete" parameterType="Int">
+	  update work set delstatus=1 where id=#{id}
+	</update>
+	
+	<select id="myfindjoblist" parameterType="Int" resultMap="BaseResultMap">
+	   select * from work where 1=1
+	   <if test="memberid!=null">
+	    and memberid=#{memberid}
+	   </if>
+	   
+	   <if test="key!=null">
+	    and title like "%"#{key}"%"
+	   </if>
+	   order by id desc
+	</select>
+	
+</mapper>
+

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.BaomingDAO">
+    <resultMap type="com.bean.Baoming" id="BaseResultMap">
+      <id column="id" property="id" jdbcType="INTEGER"/>
+      <result column="mid" property="mid" jdbcType="INTEGER"/>
+      <result column="wid" property="wid" jdbcType="INTEGER"/>
+      <result column="qyid" property="qyid" jdbcType="INTEGER"/>
+      <result column="savetime" property="savetime" jdbcType="VARCHAR"/>
+      <result column="filename" property="filename" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <select id="selectAll" parameterType="HashMap" resultMap="BaseResultMap">
+      select * from baoming where 1=1 
+      <if test="qyid!=null">
+        and qyid=#{qyid}
+      </if>
+      <if test="key!=null">
+        and mid in (select id from member where 1=1 and delstatus=0 and tname like "%"#{key}"%")
+      </if>
+      order by id desc
+    </select>
+    
+ 
+    
+    <select id="selectOne" parameterType="HashMap" resultMap="BaseResultMap">
+      select * from baoming where 1=1 and mid=#{mid} and wid=#{wid}
+    </select>
+    
+    
+	
+</mapper>
+

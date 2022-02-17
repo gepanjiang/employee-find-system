@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.MemberDAO">
+
+    <resultMap type="com.bean.Member" id="BaseResultMap">
+      <id column="id" property="id" jdbcType="INTEGER"/>
+      <result column="uname" property="uname" jdbcType="VARCHAR"/>
+      <result column="upass" property="upass" jdbcType="VARCHAR"/>
+      <result column="email" property="email" jdbcType="VARCHAR"/>
+      <result column="tname" property="tname" jdbcType="VARCHAR"/>
+      <result column="tel" property="tel" jdbcType="VARCHAR"/>
+      <result column="delstatus" property="delstatus" jdbcType="VARCHAR"/>
+      <result column="savetime" property="savetime" jdbcType="VARCHAR"/>
+      <result column="utype" property="utype" jdbcType="VARCHAR"/>
+      <result column="shstatus" property="shstatus" jdbcType="VARCHAR"/>
+      <result column="filename" property="filename" jdbcType="VARCHAR"/>
+      <result column="major" property="major" jdbcType="VARCHAR"/>
+      <result column="addr" property="addr" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    
+    <select id="selectOne" parameterType="HashMap" resultMap="BaseResultMap">
+      select * from member where uname = #{uname} and upass = #{upass} and delstatus=0 and shstatus='通过审核'
+    </select>
+
+	<select id="findById" resultType="member" parameterType="int">
+		select * from member where id=#{id}
+	</select>
+
+	<update id="update" parameterType="member">
+		update member 
+		<set>
+		<if test="upass!=null">
+		upass=#{upass},
+		</if>
+		<if test="tname!=null">
+		tname=#{tname},
+		</if>
+		<if test="tel!=null">
+		tel=#{tel},
+		</if>
+		<if test="filename!=null">
+		filename=#{filename},
+		</if>
+		<if test="email!=null">
+		major=#{major},
+		</if>
+		<if test="addr!=null">
+		addr=#{addr},
+		</if>
+		<if test="shstatus!=null">
+		shstatus=#{shstatus},
+		</if>
+		<if test="age!=null">
+		age=#{age},
+		</if>
+		<if test="major!=null">
+		major=#{major},
+		</if>
+		<if test="ziwei!=null">
+		ziwei=#{ziwei},
+		</if>
+		</set>
+		 where id=#{id}
+	</update>
+	
+
+	
+	<select id="checkUname" parameterType="String" resultMap="BaseResultMap">
+	  select * from member where uname =#{uname} and delstatus=0
+	</select>
+	
+	<select id="selectAll" parameterType="HashMap" resultMap="BaseResultMap">
+	  select * from member where delstatus=0
+	  <if test="key!=null">
+	    and uname like "%"#{key}"%"
+	  </if>
+	  order by id desc
+	</select>
+	
+	<insert id="add" parameterType="member">
+	  insert into member values(null,#{uname},#{upass},#{email},#{tname},#{age},#{tel},#{delstatus},#{savetime},#{utype},#{shstatus},#{filename},#{major},#{addr},#{ziwei})
+	</insert>
+	
+	
+	<select id="searchQzz" parameterType="HashMap" resultMap="BaseResultMap">
+	  select * from member where delstatus=0
+	  <if test="ziwei!=null">
+	    and ziwei like "%"#{ziwei}"%"
+	  </if>
+	  <if test="major!=null">
+	    and major like "%"#{major}"%"
+	  </if>
+	  order by id desc
+	</select>
+	
+</mapper>
+

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.JianliDAO">
+    <resultMap type="com.bean.Jianli" id="BaseResultMap">
+      <id column="id" property="id" jdbcType="INTEGER"/>
+      <result column="memberid" property="memberid" jdbcType="INTEGER"/>
+      <result column="sex" property="sex" jdbcType="VARCHAR"/>
+      <result column="email" property="email" jdbcType="VARCHAR"/>
+      <result column="mianmao" property="mianmao" jdbcType="VARCHAR"/>
+      <result column="xueli" property="xueli" jdbcType="VARCHAR"/>
+      <result column="ziwei" property="ziwei" jdbcType="VARCHAR"/>
+      <result column="xueyuan" property="xueyuan" jdbcType="VARCHAR"/>
+      <result column="salary" property="salary" jdbcType="VARCHAR"/>
+      <result column="filename" property="filename" jdbcType="VARCHAR"/>
+      <result column="qzyixiang" property="qzyixiang" jdbcType="VARCHAR"/>
+      <result column="gzjingli" property="gzjingli" jdbcType="VARCHAR"/>
+      <result column="delstatus" property="delstatus" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <select id="selectAll" parameterType="HashMap" resultMap="BaseResultMap">
+      select * from jianli where 1=1  
+      <if test="memberid!=null">
+         and memberid=#{memberid}
+      </if>
+      order by id desc
+    </select>
+    
+    <insert id="add" parameterType="Jianli">
+      insert into jianli values(null,#{sex},#{email},#{mianmao},#{xueli},#{ziwei},#{xueyuan},#{salary},#{filename},#{qzyixiang},#{gzjingli},#{delstatus},#{memberid})
+    </insert>
+    
+    <select id="findById" parameterType="Int" resultType="Jianli">
+      select * from jianli where id=#{id}
+    </select>
+    
+    <select id="selectOne" parameterType="Int" resultMap="BaseResultMap">
+      select * from jianli  where memberid=#{memberid} and delstatus=0
+    </select>
+	
+</mapper>
+
